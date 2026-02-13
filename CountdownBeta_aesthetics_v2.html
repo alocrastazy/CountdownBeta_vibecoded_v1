@@ -326,9 +326,9 @@
 
     .setting-row, .slider-row{
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       gap: 10px;
-      align-items: center;
+      align-items: start;
       padding: 10px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.10);
@@ -346,6 +346,8 @@
       font-size: 12px;
       opacity: 0.78;
       line-height: 1.25;
+      overflow-wrap: anywhere;
+      text-wrap: pretty;
     }
 
     .control-panel .btn{
@@ -356,7 +358,7 @@
       font-size: 12px;
       line-height: 1.1;
       box-shadow: 0 10px 24px rgba(0,0,0,0.16);
-      white-space: nowrap;
+      white-space: normal;
     }
     .control-panel .btn:hover{
       background: rgba(255,255,255,0.16);
@@ -370,6 +372,13 @@
       box-shadow: none;
     }
     .control-panel .btn.toggle-btn{ min-width: 150px; justify-self: end; }
+
+    .setting-row > .dropdown,
+    .setting-row > .btn,
+    .setting-row > .toggle-btn,
+    .slider-row > .slider-controls{
+      align-self: center;
+    }
 
     .slider-controls{
       display: grid;
@@ -1060,6 +1069,36 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+      text-align: left;
+    }
+    .dropdown-item span:first-child{
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 720px){
+      .setting-row,
+      .slider-row,
+      .task-row{
+        grid-template-columns: 1fr;
+      }
+      .control-panel .btn.toggle-btn,
+      .slider-controls{
+        justify-self: stretch;
+      }
+      .slider-controls{
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr) 78px;
+      }
+      .slider-controls input[type="range"],
+      .control-panel .ui-select{
+        width: 100%;
+      }
+      .dropdown-menu{
+        left: 0;
+        right: auto;
+        min-width: 100%;
+      }
     }
     .dropdown-item:hover{ background: var(--theme-soft); transform: translateX(2px); }
     .dropdown-item .check{ opacity: 0; transition: opacity 120ms var(--ease-smooth); }
