@@ -26,6 +26,12 @@
         radial-gradient(700px 520px at 50% 86%, rgba(90, 255, 200, 0.10), transparent 56%),
         linear-gradient(180deg, #070710 0%, #04040a 55%, #020208 100%);
 --ease-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
+      --theme-text: #ffffff;
+      --theme-accent: #9ad1ff;
+      --theme-panel: rgba(0, 0, 0, 0.82);
+      --theme-border: rgba(255,255,255,0.22);
+      --theme-soft: rgba(255,255,255,0.08);
+      --theme-accent-soft: rgba(154,209,255,0.24);
     }
 
     * { box-sizing: border-box; }
@@ -40,7 +46,7 @@
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
-      color: #ffffff; /* Light text for contrast */
+      color: var(--theme-text); /* Light text for contrast */
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -151,7 +157,7 @@
       position: fixed;
       bottom: 0;
       left: 0;
-      background: rgba(0, 0, 0, 0.82);
+      background: var(--theme-panel);
       color: #ffffff;
       padding: 10px;
       border-top-right-radius: 10px;
@@ -197,7 +203,7 @@
     button {
       background-color: rgba(255, 255, 255, 0.2);
       color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.9);
+      border: 1px solid color-mix(in srgb, var(--theme-accent) 68%, white 32%);
       padding: 6px 10px;
       font-size: 0.9rem;
       cursor: pointer;
@@ -390,28 +396,34 @@
 
     .control-panel .ui-select{
       width: 170px;
-      background: rgba(0,0,0,0.30);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.18);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 82%, transparent), color-mix(in srgb, var(--theme-panel) 94%, black));
+      color: var(--theme-text);
+      border: 1px solid var(--theme-border);
       border-radius: 12px;
-      padding: 8px 10px;
+      padding: 8px 12px;
       font-size: 12px;
       line-height: 1.1;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.22), inset 0 0 0 1px var(--theme-soft);
       appearance: none;
       -webkit-appearance: none;
       cursor: pointer;
+      transition: transform 200ms var(--ease-smooth), border-color 200ms var(--ease-smooth), box-shadow 220ms var(--ease-smooth), background 220ms var(--ease-smooth);
       background-image:
-        linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.75) 50%),
-        linear-gradient(135deg, rgba(255,255,255,0.75) 50%, transparent 50%);
+        linear-gradient(45deg, transparent 50%, color-mix(in srgb, var(--theme-accent) 70%, white 30%) 50%),
+        linear-gradient(135deg, color-mix(in srgb, var(--theme-accent) 70%, white 30%) 50%, transparent 50%);
       background-position:
         calc(100% - 16px) calc(50% - 2px),
         calc(100% - 10px) calc(50% - 2px);
       background-size: 6px 6px, 6px 6px;
       background-repeat: no-repeat;
     }
+    .control-panel .ui-select:hover{
+      transform: translateY(-1px);
+      border-color: color-mix(in srgb, var(--theme-accent) 55%, white 45%);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.28), inset 0 0 0 1px color-mix(in srgb, var(--theme-accent) 28%, transparent);
+    }
     .control-panel .ui-select:focus-visible{
-      outline: 2px solid rgba(255,255,255,0.38);
+      outline: 2px solid color-mix(in srgb, var(--theme-accent) 46%, white 54%);
       outline-offset: 2px;
     }
 
@@ -1018,17 +1030,17 @@
       right: 0;
       top: calc(100% + 10px);
       min-width: 260px;
-      padding: 6px;
+      padding: 8px;
       border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(12, 12, 16, 0.78);
-      backdrop-filter: blur(14px);
-      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+      border: 1px solid var(--theme-border);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 82%, transparent), color-mix(in srgb, var(--theme-panel) 95%, black));
+      backdrop-filter: blur(16px) saturate(1.1);
+      box-shadow: 0 20px 64px rgba(0,0,0,0.45), inset 0 0 0 1px var(--theme-soft);
       transform-origin: top right;
       opacity: 0;
-      transform: translateY(-8px) scale(0.985);
+      transform: translateY(-10px) scale(0.982);
       pointer-events: none;
-      transition: opacity 160ms var(--ease-smooth), transform 160ms var(--ease-smooth);
+      transition: opacity 220ms var(--ease-smooth), transform 220ms var(--ease-smooth), border-color 220ms var(--ease-smooth);
       z-index: 10050;
     }
     .dropdown.open .dropdown-menu{
@@ -1049,8 +1061,9 @@
       justify-content: space-between;
       gap: 10px;
     }
-    .dropdown-item:hover{ background: rgba(255,255,255,0.08); }
+    .dropdown-item:hover{ background: var(--theme-soft); transform: translateX(2px); }
     .dropdown-item .check{ opacity: 0; transition: opacity 120ms var(--ease-smooth); }
+    .dropdown-item[aria-selected="true"]{ background: color-mix(in srgb, var(--theme-accent) 20%, transparent); border:1px solid color-mix(in srgb, var(--theme-accent) 35%, transparent); }
     .dropdown-item[aria-selected="true"] .check{ opacity: 1; }
 
     
@@ -1110,7 +1123,7 @@
       position: fixed;
       left: 16px;
       bottom: 16px;
-      z-index: 60;
+      z-index: 40;
       max-width: min(520px, calc(100vw - 32px));
       font-size: 12px;
       line-height: 1.35;
@@ -1140,6 +1153,52 @@
     .unsplash-credit a:hover{
       border-bottom-color: rgba(255,255,255,0.60);
     }
+    body.settings-open .unsplash-credit{
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateY(8px);
+    }
+
+    body.theme-shift *{
+      transition: color 340ms var(--ease-smooth), background-color 340ms var(--ease-smooth), border-color 340ms var(--ease-smooth), box-shadow 340ms var(--ease-smooth), filter 340ms var(--ease-smooth) !important;
+    }
+
+    .top-error{
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translate3d(-50%, -140%, 0);
+      z-index: 15000;
+      background: rgba(191,30,48,0.95);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.35);
+      padding: 10px 14px;
+      border-radius: 12px;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.35);
+      transition: transform 280ms var(--ease-smooth), opacity 280ms var(--ease-smooth);
+      opacity:0;
+      pointer-events:none;
+      font-size:13px;
+    }
+    .top-error.show{ transform: translate3d(-50%,0,0); opacity:1; }
+
+    .trello-import-tab{ max-height: 40vh; overflow:auto; padding:8px; border:1px solid rgba(255,255,255,0.14); border-radius:12px; background: rgba(0,0,0,0.18); }
+    .trello-list{ border:1px solid var(--theme-border); border-radius:12px; margin-bottom:8px; overflow:hidden; transition:border-color 180ms var(--ease-smooth), transform 180ms var(--ease-smooth), box-shadow 180ms var(--ease-smooth); }
+    .trello-list:hover{ border-color: color-mix(in srgb, var(--theme-accent) 45%, white 55%); transform: translateY(-1px); box-shadow: inset 0 0 0 1px var(--theme-soft); }
+    .trello-list-head{ display:flex; align-items:center; gap:8px; padding:8px 10px; background:color-mix(in srgb, var(--theme-panel) 70%, transparent); cursor:pointer; }
+    .trello-arrow{ display:inline-block; transition:transform 180ms var(--ease-smooth); }
+    .trello-list.open .trello-arrow{ transform: rotate(90deg); }
+    .trello-cards{ max-height:0; overflow:hidden; transition:max-height 260ms var(--ease-smooth); padding:0 12px; }
+    .trello-list.open .trello-cards{ max-height:220px; padding:8px 12px 12px; }
+    .trello-card{ font-size:12px; opacity:.9; text-align:left; padding:4px 0; }
+    .settings-advanced{ margin-top:8px; border:1px solid var(--theme-border); border-radius:12px; padding:6px 10px; background:color-mix(in srgb, var(--theme-panel) 76%, transparent); transition:border-color 220ms var(--ease-smooth), box-shadow 220ms var(--ease-smooth), transform 220ms var(--ease-smooth); }
+    .settings-advanced:hover{ border-color: color-mix(in srgb, var(--theme-accent) 45%, white 55%); box-shadow: inset 0 0 0 1px var(--theme-soft); transform: translateY(-1px); }
+    .settings-advanced > summary{ cursor:pointer; font-weight:600; list-style:none; display:flex; align-items:center; gap:8px; }
+    .settings-advanced > summary::-webkit-details-marker{ display:none; }
+    .settings-advanced > summary::before{ content:'▸'; opacity:.9; transition: transform 180ms var(--ease-smooth), color 180ms var(--ease-smooth); color: var(--theme-accent); }
+    .settings-advanced[open] > summary::before{ transform: rotate(90deg); }
+    .control-panel input[type="color"]{ width: 170px; height: 38px; border-radius: 12px; border:1px solid var(--theme-border); background: transparent; padding: 3px; box-shadow: 0 10px 22px rgba(0,0,0,0.18); cursor:pointer; transition: transform 200ms var(--ease-smooth), border-color 200ms var(--ease-smooth), box-shadow 200ms var(--ease-smooth); }
+    .control-panel input[type="color"]:hover{ transform: translateY(-1px); border-color: color-mix(in srgb, var(--theme-accent) 55%, white 45%); box-shadow: 0 14px 26px rgba(0,0,0,0.25); }
 
 .modal-backdrop{
       position: fixed; inset: 0;
@@ -1199,6 +1258,7 @@
   <div class="settings-backdrop" id="settingsBackdrop" aria-hidden="true"></div>
 
   <div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+  <div class="top-error" id="topError" aria-live="assertive" aria-atomic="true"></div>
 
   <!-- v4 additions: confetti + modals -->
   <canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
@@ -1352,11 +1412,28 @@
 
       <div class="setting-row">
         <div class="setting-meta">
-          <div class="setting-name">Text weight</div>
-          <div class="setting-desc">Switch between normal and thin numbers.</div>
+          <div class="setting-name">Font weight</div>
+          <div class="setting-desc">Set countdown number thickness.</div>
         </div>
-        <button class="btn toggle-btn" id="toggleThinText" data-active="false" title="Toggle text weight">Use Thin Text</button>
+        <select class="ui-select" id="fontWeightSelect" aria-label="Font weight">
+          <option value="200">Light</option>
+          <option value="400" selected>Normal</option>
+          <option value="600">Semibold</option>
+          <option value="700">Bold</option>
+        </select>
       </div>
+
+      <details class="settings-advanced">
+        <summary>Advanced status line controls</summary>
+        <div class="import-options" style="margin-top:8px;">
+          <label class="check"><input type="checkbox" id="statShowTask" checked> Current task</label>
+          <label class="check"><input type="checkbox" id="statShowDue" checked> Due date</label>
+          <label class="check"><input type="checkbox" id="statShowPending" checked> Pending</label>
+          <label class="check"><input type="checkbox" id="statShowCompleted" checked> Completed</label>
+          <label class="check"><input type="checkbox" id="statShowMissed" checked> Missed</label>
+          <label class="check"><input type="checkbox" id="statShowTrello" checked> Trello link</label>
+        </div>
+      </details>
 
       <div class="setting-row">
         <div class="setting-meta">
@@ -1389,6 +1466,24 @@
         </div>
         <button class="btn toggle-btn" id="toggleCondensedCountdown" data-active="false" title="Toggle countdown format">Condense Countdown</button>
       </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="section-title">Themes</div>
+      <div class="setting-row">
+        <div class="setting-meta">
+          <div class="setting-name">Theme preset</div>
+          <div class="setting-desc">Switch vibe instantly with animated transitions.</div>
+        </div>
+        <select class="ui-select" id="themePresetSelect">
+          <option value="frost">Frost</option>
+          <option value="sunset">Sunset</option>
+          <option value="midnight">Midnight</option>
+        </select>
+      </div>
+      <div class="setting-row"><div class="setting-meta"><div class="setting-name">Text color</div></div><input type="color" id="themeTextColor" value="#ffffff"></div>
+      <div class="setting-row"><div class="setting-meta"><div class="setting-name">Accent color</div></div><input type="color" id="themeAccentColor" value="#9ad1ff"></div>
+      <div class="setting-row"><div class="setting-meta"><div class="setting-name">Panel tint</div></div><input type="color" id="themePanelColor" value="#000000"></div>
     </div>
 
     <div class="settings-section">
@@ -1610,6 +1705,7 @@
       </div>
       <div class="import-box" aria-label="Import and export countdowns">
         <div class="import-title">Import / Export</div>
+        <div class="import-hint">Tip: Drag &amp; drop a JSON file anywhere onto the page to import.</div>
         <div class="import-note">
           Paste tasks below to import, or export your current list for backup/sharing. <span class="import-hint">Trello: export a board to JSON, or download an iCalendar (.ics) feed.</span>
           <span class="import-hint">Formats: JSON (from Export) • or line format: <span class="mono">YYYY-MM-DD HH:MM  task title</span> • or date header: <span class="mono">YYYY-MM-DD</span> then titles.</span>
@@ -1627,10 +1723,10 @@ Or date header mode:
 
 Or paste JSON exported from this page."></textarea>
 
-        <div class="import-options">
+        <details class="settings-advanced"><summary>Advanced import options</summary><div class="import-options" style="margin-top:8px;">
           <label class="check"><input type="checkbox" id="replaceOnImport"> Replace existing tasks</label>
           <label class="check"><input type="checkbox" id="skipDupesOnImport" checked> Skip duplicates (same due + title)</label>
-        </div>
+        </div></details>
 
         <div class="import-actions">
           <button class="btn ghost" id="exportTasksBtn" title="Export all countdowns to JSON">Export</button>
@@ -1651,6 +1747,23 @@ Or paste JSON exported from this page."></textarea>
   </div>
 
 
+  
+  <div class="modal" id="trelloImportModal" role="dialog" aria-modal="true" aria-labelledby="trelloImportTitle" hidden>
+    <div class="modal-card">
+      <div class="modal-title" id="trelloImportTitle">Trello import tab</div>
+      <div class="modal-message">Choose which lists/cards to import.</div>
+      <div class="import-options">
+        <label class="check"><input type="checkbox" id="trelloIncludeUndated" checked> Include cards without due date (set to next hour)</label>
+        <label class="check"><input type="checkbox" id="trelloIncludeArchived"> Include archived cards</label>
+        <label class="check"><input type="checkbox" id="trelloIncludeCompleted"> Include completed cards</label>
+      </div>
+      <div class="trello-import-tab" id="trelloImportLists"></div>
+      <div class="modal-actions">
+        <button class="btn ghost" id="trelloImportCancelBtn" type="button">Cancel</button>
+        <button class="btn" id="trelloImportApplyBtn" type="button">Import selected</button>
+      </div>
+    </div>
+  </div>
   <button class="toggle-arrow" id="toggleArrow" aria-label="Open settings" aria-expanded="false">⚙</button>
 
   <script>
@@ -1817,7 +1930,7 @@ Or paste JSON exported from this page."></textarea>
       const toggleMinutesButton = document.getElementById('toggleMinutes');
       const toggleSecondsButton = document.getElementById('toggleSeconds');
       const toggleTitleButton = document.getElementById('toggleTitle');
-      const toggleThinTextButton = document.getElementById('toggleThinText');
+      const fontWeightSelect = document.getElementById('fontWeightSelect');
       const toggleUnitLabelsButton = document.getElementById('toggleUnitLabels');
       const toggleCondensedWindowButton = document.getElementById('toggleCondensedWindow');
       const toggleCondensedCountdownButton = document.getElementById('toggleCondensedCountdown');
@@ -1896,6 +2009,7 @@ Or paste JSON exported from this page."></textarea>
       let showTaskActions = true;
       let includeTaskNameInWindowTitle = true;
       let currentPresetId = null;
+      const statusVisibility = { task:true, due:true, pending:true, completed:true, missed:true, trello:true };
 
       function setToggleButtonText(button, isOn, label){
         if(!button) return;
@@ -1946,6 +2060,24 @@ Or paste JSON exported from this page."></textarea>
       const importTasksBtn = document.getElementById('importTasksBtn');
       const importTrelloBtn = document.getElementById('importTrelloBtn');
       const trelloImportInput = document.getElementById('trelloImportInput');
+      const topError = document.getElementById('topError');
+      const statShowTask = document.getElementById('statShowTask');
+      const statShowDue = document.getElementById('statShowDue');
+      const statShowPending = document.getElementById('statShowPending');
+      const statShowCompleted = document.getElementById('statShowCompleted');
+      const statShowMissed = document.getElementById('statShowMissed');
+      const statShowTrello = document.getElementById('statShowTrello');
+      const themePresetSelect = document.getElementById('themePresetSelect');
+      const themeTextColor = document.getElementById('themeTextColor');
+      const themeAccentColor = document.getElementById('themeAccentColor');
+      const themePanelColor = document.getElementById('themePanelColor');
+      const trelloImportModal = document.getElementById('trelloImportModal');
+      const trelloImportLists = document.getElementById('trelloImportLists');
+      const trelloImportApplyBtn = document.getElementById('trelloImportApplyBtn');
+      const trelloImportCancelBtn = document.getElementById('trelloImportCancelBtn');
+      const trelloIncludeUndated = document.getElementById('trelloIncludeUndated');
+      const trelloIncludeArchived = document.getElementById('trelloIncludeArchived');
+      const trelloIncludeCompleted = document.getElementById('trelloIncludeCompleted');
 
       const toggleAutoSkipMissedBtn = document.getElementById('toggleAutoSkipMissed');
       const toggleCatchUpBtn = document.getElementById('toggleCatchUp');
@@ -2584,7 +2716,7 @@ pills.push(`<span class="pill">Showing: <b>${escapeHtml(name)}</b></span>`);
           if(importExportText) importExportText.value = text;
           importTasks();
         } catch(err){
-          showToast('Could not read that file.');
+          showTopError('Could not read that file.');
         } finally {
           try{ e.target.value = ''; }catch(_){}
         }
@@ -2793,7 +2925,7 @@ let idx = 0;
         return out;
       }
 
-      function parseTrelloJsonObjectToTasks(obj){
+      function parseTrelloJsonObjectToTasks(obj, opts = {}){
         const cards = Array.isArray(obj?.cards) ? obj.cards : null;
         if(!cards) return [];
 
@@ -2803,6 +2935,10 @@ let idx = 0;
         const lists = Array.isArray(obj?.lists) ? obj.lists : [];
         const listNameById = new Map(lists.map(l => [String(l.id), String(l.name || '')]));
         const looksDoneList = (name) => /(^|\b)(done|complete|completed|finished|archive|archived)(\b|$)/i.test(String(name || ''));
+        const includeArchived = !!opts.includeArchived;
+        const includeCompleted = !!opts.includeCompleted;
+        const includeUndated = !!opts.includeUndated;
+        const allowedLists = opts.allowedLists instanceof Set ? opts.allowedLists : null;
 
         let i = 0;
 
@@ -2810,10 +2946,11 @@ let idx = 0;
           if(!card) continue;
 
           const dueRaw = card.due || card.dueDate || card.due_at || null;
-          if(!dueRaw) continue;
-
-          const dueTs = (new Date(dueRaw)).getTime();
-          if(!Number.isFinite(dueTs)) continue;
+          let dueTs = dueRaw ? (new Date(dueRaw)).getTime() : NaN;
+          if(!Number.isFinite(dueTs)){
+            if(!includeUndated) continue;
+            dueTs = Date.now() + 3600e3;
+          }
 
           const title = String(card.name || card.title || card.desc || 'Countdown').trim();
           const completed = !!card.dueComplete;
@@ -2822,7 +2959,8 @@ let idx = 0;
           const heuristicDone = looksDoneList(listName);
 
           // Skip Trello cards that are already completed/archived (or in a likely-done list)
-          if(completed || archived || heuristicDone) continue;
+          if((completed && !includeCompleted) || ((archived || heuristicDone) && !includeArchived)) continue;
+          if(allowedLists && !allowedLists.has(String(card.idList || ''))) continue;
 
           // Prefer Trello card creation time when possible (Trello IDs embed a timestamp)
           let createdAt = base + i;
@@ -2872,11 +3010,18 @@ let idx = 0;
         if(!file) return;
         try{
           const text = await file.text();
-          const incoming = parseTrelloTextToTasks(text);
-          if(!incoming.length){
-            showToast('That file didn’t look like a Trello export (.json) or calendar feed (.ics).');
+          let obj = null;
+          try{ obj = JSON.parse(String(text||'')); }catch(_){ }
+          if(obj && Array.isArray(obj.cards) && Array.isArray(obj.lists)){
+            const lists = obj.lists.map(l => ({ id:String(l.id||''), name:String(l.name||'Untitled'), cards: (obj.cards||[]).filter(c=>String(c.idList||'')===String(l.id||'')) }));
+            openTrelloImportModal({ raw: obj, lists });
           } else {
-            mergeIncomingTasks(incoming, 'Trello list');
+            const incoming = parseTrelloTextToTasks(text);
+            if(!incoming.length){
+              showToast('That file didn’t look like a Trello export (.json) or calendar feed (.ics).');
+            } else {
+              mergeIncomingTasks(incoming, 'Trello list');
+            }
           }
         } catch(err){
           showToast('Could not read that Trello file.');
@@ -2886,6 +3031,116 @@ let idx = 0;
       });
 
 
+
+
+      function showTopError(message){
+        if(!topError) return showToast(message);
+        topError.textContent = String(message || 'Invalid file');
+        topError.classList.add('show');
+        clearTimeout(showTopError._t);
+        showTopError._t = setTimeout(() => topError.classList.remove('show'), 2400);
+      }
+      ;['dragenter','dragover'].forEach(evt => document.addEventListener(evt, (e)=>{
+        if(!e.dataTransfer) return;
+        e.preventDefault();
+      }));
+      document.addEventListener('drop', async (e)=>{
+        const f = e.dataTransfer?.files?.[0];
+        if(!f) return;
+        e.preventDefault();
+        if(!/\.json$/i.test(f.name)){ showTopError('Only JSON files can be dropped here.'); return; }
+        try{
+          const txt = await f.text();
+          const parsed = parseImportText(txt);
+          if(parsed.errors?.length){ showTopError(parsed.errors[0]); return; }
+          mergeIncomingTasks(parsed.tasks || [], 'Dropped file');
+        }catch(_){ showTopError('Could not parse dropped JSON file.'); }
+      });
+
+      function syncStatusControls(){
+        statusVisibility.task = !!statShowTask?.checked;
+        statusVisibility.due = !!statShowDue?.checked;
+        statusVisibility.pending = !!statShowPending?.checked;
+        statusVisibility.completed = !!statShowCompleted?.checked;
+        statusVisibility.missed = !!statShowMissed?.checked;
+        statusVisibility.trello = !!statShowTrello?.checked;
+      }
+      [statShowTask,statShowDue,statShowPending,statShowCompleted,statShowMissed,statShowTrello].forEach(el => el?.addEventListener('change', ()=>{ syncStatusControls(); updateTitleAndStatus(); }));
+      syncStatusControls();
+
+      const themePresets = {
+        frost: { text:'#ffffff', accent:'#9ad1ff', panel:'#000000d1' },
+        sunset: { text:'#ffeede', accent:'#ff8a80', panel:'#2a0f1fcc' },
+        midnight: { text:'#d9e7ff', accent:'#7c8cff', panel:'#060912cc' }
+      };
+      function hexToRgb(hex){
+        const m = String(hex || '').trim().match(/^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i);
+        if(!m) return null;
+        return { r: parseInt(m[1],16), g: parseInt(m[2],16), b: parseInt(m[3],16) };
+      }
+      function applyThemeColors(textHex, accentHex, panelHex){
+        const root = document.documentElement;
+        root.style.setProperty('--theme-text', textHex);
+        root.style.setProperty('--theme-accent', accentHex);
+        root.style.setProperty('--theme-panel', panelHex + 'd4');
+        const a = hexToRgb(accentHex) || {r:154,g:209,b:255};
+        root.style.setProperty('--theme-accent-soft', `rgba(${a.r}, ${a.g}, ${a.b}, 0.24)`);
+        root.style.setProperty('--theme-border', `rgba(${a.r}, ${a.g}, ${a.b}, 0.36)`);
+        root.style.setProperty('--theme-soft', `rgba(${a.r}, ${a.g}, ${a.b}, 0.14)`);
+      }
+      function applyThemePreset(id){
+        const p = themePresets[id] || themePresets.frost;
+        if(themeTextColor) themeTextColor.value = p.text;
+        if(themeAccentColor) themeAccentColor.value = p.accent;
+        if(themePanelColor) themePanelColor.value = p.panel.slice(0,7);
+        applyThemeColors(p.text, p.accent, p.panel.slice(0,7));
+        document.body.classList.remove('theme-shift'); void document.body.offsetWidth; document.body.classList.add('theme-shift');
+        setTimeout(()=>document.body.classList.remove('theme-shift'), 420);
+      }
+      function applyCustomTheme(){
+        applyThemeColors(themeTextColor?.value || '#ffffff', themeAccentColor?.value || '#9ad1ff', themePanelColor?.value || '#000000');
+      }
+      themePresetSelect?.addEventListener('change', ()=> applyThemePreset(themePresetSelect.value));
+      themeTextColor?.addEventListener('input', applyCustomTheme);
+      themeAccentColor?.addEventListener('input', applyCustomTheme);
+      themePanelColor?.addEventListener('input', applyCustomTheme);
+      applyThemePreset(themePresetSelect?.value || 'frost');
+
+      let __trelloImportState = null;
+      function openTrelloImportModal(state){
+        __trelloImportState = state;
+        if(!trelloImportLists || !trelloImportModal) return;
+        trelloImportLists.innerHTML = '';
+        state.lists.forEach((lst, i)=>{
+          const wrap = document.createElement('div');
+          wrap.className = 'trello-list' + (i===0 ? ' open' : '');
+          wrap.innerHTML = `<div class="trello-list-head"><span class="trello-arrow">▸</span><label class="check"><input type="checkbox" data-list-id="${escapeHtml(lst.id)}" checked> ${escapeHtml(lst.name)} (${lst.cards.length})</label></div><div class="trello-cards">${lst.cards.map(c => `<div class='trello-card'>• ${escapeHtml(c.name)}</div>`).join('')}</div>`;
+          wrap.querySelector('.trello-list-head')?.addEventListener('click', (e)=>{ if(e.target.tagName !== 'INPUT') wrap.classList.toggle('open'); });
+          trelloImportLists.appendChild(wrap);
+        });
+        trelloImportModal.hidden = false;
+        trelloImportModal.classList.add('show');
+        modalBackdrop?.classList.add('show');
+      }
+      function closeTrelloImportModal(){
+        if(trelloImportModal){ trelloImportModal.hidden = true; trelloImportModal.classList.remove('show'); }
+        modalBackdrop?.classList.remove('show');
+        __trelloImportState = null;
+      }
+      trelloImportCancelBtn?.addEventListener('click', closeTrelloImportModal);
+      trelloImportApplyBtn?.addEventListener('click', ()=>{
+        if(!__trelloImportState) return closeTrelloImportModal();
+        const selected = new Set(Array.from(trelloImportLists.querySelectorAll('input[data-list-id]:checked')).map(x => x.getAttribute('data-list-id')));
+        const incoming = parseTrelloJsonObjectToTasks(__trelloImportState.raw, {
+          includeUndated: !!trelloIncludeUndated?.checked,
+          includeArchived: !!trelloIncludeArchived?.checked,
+          includeCompleted: !!trelloIncludeCompleted?.checked,
+          allowedLists: selected
+        });
+        if(!incoming.length) showTopError('No cards matched your selected Trello filters.');
+        else mergeIncomingTasks(incoming, 'Trello list');
+        closeTrelloImportModal();
+      });
 
 
       completeTaskBtn?.addEventListener('click', () => {
@@ -3320,25 +3575,28 @@ let idx = 0;
         el.hidden = false;
         el.replaceChildren();
 
-        const span1 = document.createElement('span');
-        span1.textContent = 'Photo by ';
+        const span1 = document.createTextNode('');
 
         const aUser = document.createElement('a');
-        aUser.href = credit.userUrl || 'https://unsplash.com';
+        aUser.href = credit.photoUrl || 'https://unsplash.com';
         aUser.target = '_blank';
         aUser.rel = 'noopener noreferrer';
-        aUser.textContent = credit.userName || 'Unknown';
+        aUser.textContent = 'Photo';
+        const sepAuthor1 = document.createTextNode(' by ');
+        const aAuthor = document.createElement('a');
+        aAuthor.href = credit.userUrl || 'https://unsplash.com';
+        aAuthor.target = '_blank';
+        aAuthor.rel = 'noopener noreferrer';
+        aAuthor.textContent = credit.userName || 'Unknown';
+        const sepAuthor2 = document.createTextNode(' on ');
 
-        const span2 = document.createElement('span');
-        span2.textContent = ' on ';
-
-        const aUnsplash = document.createElement('a');
+                const aUnsplash = document.createElement('a');
         aUnsplash.href = credit.unsplashUrl || 'https://unsplash.com';
         aUnsplash.target = '_blank';
         aUnsplash.rel = 'noopener noreferrer';
         aUnsplash.textContent = 'Unsplash';
 
-        el.append(span1, aUser, span2, aUnsplash);
+        el.append(span1, aUser, sepAuthor1, aAuthor, sepAuthor2, aUnsplash);
         requestAnimationFrame(() => el.classList.add('show'));
       }
 
@@ -4850,10 +5108,7 @@ This cannot be undone.`,
         titleElement.classList.remove('hidden');
         countdownWrapper.classList.remove('centered');
 
-        // Thin text off
-        toggleThinTextButton.dataset.active = 'false';
-        toggleThinTextButton.textContent = 'Use Thin Text';
-        countdownElement.classList.remove('thin');
+        setFontWeight('400');
 
         // Unit labels on
         showUnitLabels = true;
@@ -4900,7 +5155,7 @@ This cannot be undone.`,
         showMinutes: true,
         showSeconds: true,
         showTitle: true,
-        thinText: false,
+        fontWeight: "400",
         showUnitLabels: true,
         condensedWindow: false,
         condensedCountdown: false,
@@ -4932,7 +5187,7 @@ This cannot be undone.`,
         return {
           showDays, showHours, showMinutes, showSeconds,
           showTitle: !titleElement.classList.contains('hidden'),
-          thinText: countdownElement.classList.contains('thin'),
+          fontWeight: String(fontWeightSelect?.value || '400'),
           showUnitLabels,
           condensedWindow: useCondensedWindowFormat,
           condensedCountdown: useCondensedCountdownFormat,
@@ -4959,7 +5214,7 @@ This cannot be undone.`,
         out.showSeconds = !!out.showSeconds;
 
         out.showTitle = !!out.showTitle;
-        out.thinText = !!out.thinText;
+        out.fontWeight = ["200","400","600","700"].includes(String(out.fontWeight)) ? String(out.fontWeight) : "400";
         out.showUnitLabels = !!out.showUnitLabels;
 
         out.condensedWindow = !!out.condensedWindow;
@@ -5040,13 +5295,10 @@ This cannot be undone.`,
         }
       }
 
-      function setThinText(on){
-        const isOn = !!on;
-        countdownElement.classList.toggle('thin', isOn);
-        if(toggleThinTextButton){
-          toggleThinTextButton.dataset.active = String(isOn);
-          toggleThinTextButton.textContent = isOn ? 'Use Normal Weight' : 'Use Thin Text';
-        }
+      function setFontWeight(weight){
+        const w = String(weight || '400');
+        countdownElement.style.fontWeight = w;
+        if(fontWeightSelect) fontWeightSelect.value = w;
       }
 
       function setUnitLabels(on){
@@ -5082,7 +5334,7 @@ This cannot be undone.`,
         showSeconds = snap.showSeconds;
 
         setTitleVisibility(snap.showTitle);
-        setThinText(snap.thinText);
+        setFontWeight(snap.fontWeight || "400");
         setUnitLabels(snap.showUnitLabels);
         setCondensedWindow(snap.condensedWindow);
         setCondensedCountdown(snap.condensedCountdown);
@@ -5478,12 +5730,10 @@ This cannot be undone.`,
       });
 
 
-      // Thin text toggle
-      toggleThinTextButton?.addEventListener('click', () => {
-        const isActive = toggleThinTextButton.dataset.active === 'true';
-        toggleThinTextButton.textContent = isActive ? 'Use Thin Text' : 'Use Normal Weight';
-        toggleThinTextButton.dataset.active = String(!isActive);
-        countdownElement.classList.toggle('thin', !isActive);
+      // Font weight
+      fontWeightSelect?.addEventListener('change', () => {
+        setFontWeight(fontWeightSelect.value || '400');
+        updateCountdown();
         syncRestoreDefaultsVisibility();
       });
 
