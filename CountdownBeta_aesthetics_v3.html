@@ -250,10 +250,11 @@
       overflow: auto;
       padding: 14px 14px 12px;
       border-top-right-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.14);
+      border: 1px solid var(--theme-border);
       background:
-        radial-gradient(1200px 450px at 20% 0%, rgba(255,255,255,0.12), transparent 45%),
-        linear-gradient(180deg, rgba(14,14,16,0.70), rgba(0,0,0,0.78));
+        radial-gradient(1200px 450px at 20% 0%, color-mix(in srgb, var(--theme-accent) 22%, transparent), transparent 45%),
+        linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 74%, rgba(255,255,255,0.10)), color-mix(in srgb, var(--theme-panel) 92%, rgba(0,0,0,0.24)));
+      box-shadow: inset 0 0 0 1px var(--theme-soft), 0 24px 58px rgba(0,0,0,0.36);
       backdrop-filter: blur(14px) saturate(1.15);
       -webkit-backdrop-filter: blur(14px) saturate(1.15);
     }
@@ -326,13 +327,14 @@
 
     .setting-row, .slider-row{
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       gap: 10px;
-      align-items: center;
+      align-items: start;
       padding: 10px;
       border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.06);
+      border: 1px solid color-mix(in srgb, var(--theme-border) 82%, rgba(255,255,255,0.18));
+      background: linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 72%, rgba(255,255,255,0.10)), color-mix(in srgb, var(--theme-panel) 90%, rgba(0,0,0,0.20)));
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--theme-soft) 88%, rgba(255,255,255,0.04));
     }
     .setting-meta{ min-width: 0; }
     .setting-name{
@@ -346,30 +348,39 @@
       font-size: 12px;
       opacity: 0.78;
       line-height: 1.25;
+      overflow-wrap: anywhere;
+      text-wrap: pretty;
     }
 
     .control-panel .btn{
-      border: 1px solid rgba(255,255,255,0.22);
-      background: rgba(255,255,255,0.10);
+      border: 1px solid color-mix(in srgb, var(--theme-border) 82%, rgba(255,255,255,0.20));
+      background: linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 70%, rgba(255,255,255,0.14)), color-mix(in srgb, var(--theme-panel) 88%, rgba(0,0,0,0.18)));
       padding: 8px 10px;
       border-radius: 12px;
       font-size: 12px;
       line-height: 1.1;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.16);
-      white-space: nowrap;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.16), inset 0 0 0 1px color-mix(in srgb, var(--theme-soft) 80%, rgba(255,255,255,0.04));
+      white-space: normal;
     }
     .control-panel .btn:hover{
-      background: rgba(255,255,255,0.16);
-      border-color: rgba(255,255,255,0.28);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 64%, rgba(255,255,255,0.20)), color-mix(in srgb, var(--theme-panel) 84%, rgba(0,0,0,0.15)));
+      border-color: color-mix(in srgb, var(--theme-accent) 48%, white 52%);
       transform: translate3d(0,-1px,0);
     }
     .control-panel .btn:active{ transform: translate3d(0,0,0) scale(0.985); }
 
     .control-panel .btn.ghost{
-      background: rgba(255,255,255,0.06);
-      box-shadow: none;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 76%, rgba(255,255,255,0.07)), color-mix(in srgb, var(--theme-panel) 92%, rgba(0,0,0,0.20)));
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--theme-soft) 70%, rgba(255,255,255,0.03));
     }
     .control-panel .btn.toggle-btn{ min-width: 150px; justify-self: end; }
+
+    .setting-row > .dropdown,
+    .setting-row > .btn,
+    .setting-row > .toggle-btn,
+    .slider-row > .slider-controls{
+      align-self: center;
+    }
 
     .slider-controls{
       display: grid;
@@ -1033,7 +1044,8 @@
       padding: 8px;
       border-radius: 16px;
       border: 1px solid var(--theme-border);
-      background: linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 82%, transparent), color-mix(in srgb, var(--theme-panel) 95%, black));
+      background: rgba(20,23,33,0.74);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 74%, rgba(255,255,255,0.08)), color-mix(in srgb, var(--theme-panel) 90%, rgba(0,0,0,0.2)));
       backdrop-filter: blur(16px) saturate(1.1);
       box-shadow: 0 20px 64px rgba(0,0,0,0.45), inset 0 0 0 1px var(--theme-soft);
       transform-origin: top right;
@@ -1060,6 +1072,36 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+      text-align: left;
+    }
+    .dropdown-item span:first-child{
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 720px){
+      .setting-row,
+      .slider-row,
+      .task-row{
+        grid-template-columns: 1fr;
+      }
+      .control-panel .btn.toggle-btn,
+      .slider-controls{
+        justify-self: stretch;
+      }
+      .slider-controls{
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr) 78px;
+      }
+      .slider-controls input[type="range"],
+      .control-panel .ui-select{
+        width: 100%;
+      }
+      .dropdown-menu{
+        left: 0;
+        right: auto;
+        min-width: 100%;
+      }
     }
     .dropdown-item:hover{ background: var(--theme-soft); transform: translateX(2px); }
     .dropdown-item .check{ opacity: 0; transition: opacity 120ms var(--ease-smooth); }
@@ -1182,21 +1224,24 @@
     }
     .top-error.show{ transform: translate3d(-50%,0,0); opacity:1; }
 
-    .trello-import-tab{ max-height: 40vh; overflow:auto; padding:10px; border:1px solid var(--theme-border); border-radius:14px; background: linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 78%, transparent), color-mix(in srgb, var(--theme-panel) 92%, black)); box-shadow: inset 0 0 0 1px var(--theme-soft); }
-    .trello-list{ border:1px solid var(--theme-border); border-radius:12px; margin-bottom:8px; overflow:hidden; transition:border-color 180ms var(--ease-smooth), transform 180ms var(--ease-smooth), box-shadow 180ms var(--ease-smooth); }
+    .trello-import-tab{ max-height: 44vh; overflow:auto; padding:10px; border:1px solid var(--theme-border); border-radius:14px; background: rgba(28,31,42,0.62); background: linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 72%, rgba(255,255,255,0.08)), color-mix(in srgb, var(--theme-panel) 88%, rgba(0,0,0,0.18))); box-shadow: inset 0 0 0 1px var(--theme-soft), 0 10px 30px rgba(0,0,0,0.26); }
+    .trello-list{ border:1px solid var(--theme-border); border-radius:12px; margin-bottom:8px; overflow:hidden; background: rgba(255,255,255,0.04); transition:border-color 180ms var(--ease-smooth), transform 180ms var(--ease-smooth), box-shadow 180ms var(--ease-smooth), background 180ms var(--ease-smooth); }
     .trello-list:hover{ border-color: color-mix(in srgb, var(--theme-accent) 45%, white 55%); transform: translateY(-1px); box-shadow: inset 0 0 0 1px var(--theme-soft); }
-    .trello-list-head{ display:flex; align-items:center; gap:8px; padding:8px 10px; background:color-mix(in srgb, var(--theme-panel) 70%, transparent); cursor:pointer; }
+    .trello-list-head{ display:flex; align-items:center; gap:8px; padding:9px 10px; background: rgba(255,255,255,0.06); background: linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 74%, rgba(255,255,255,0.09)), color-mix(in srgb, var(--theme-panel) 88%, rgba(0,0,0,0.2))); cursor:pointer; }
     .trello-arrow{ display:inline-block; transition:transform 180ms var(--ease-smooth); }
     .trello-list.open .trello-arrow{ transform: rotate(90deg); }
-    .trello-cards{ max-height:0; overflow:hidden; transition:max-height 260ms var(--ease-smooth); padding:0 12px; }
-    .trello-list.open .trello-cards{ max-height:220px; padding:8px 12px 12px; }
-    .trello-card{ font-size:12px; opacity:.9; text-align:left; padding:4px 0; }
-    .settings-advanced{ margin-top:8px; border:1px solid var(--theme-border); border-radius:12px; padding:6px 10px; background:color-mix(in srgb, var(--theme-panel) 76%, transparent); transition:border-color 220ms var(--ease-smooth), box-shadow 220ms var(--ease-smooth), transform 220ms var(--ease-smooth); }
-    .settings-advanced:hover{ border-color: color-mix(in srgb, var(--theme-accent) 45%, white 55%); box-shadow: inset 0 0 0 1px var(--theme-soft); transform: translateY(-1px); }
+    .trello-cards{ max-height:0; overflow:hidden; transition:max-height 260ms var(--ease-smooth); padding:0 10px; display:grid; gap:8px; }
+    .trello-list.open .trello-cards{ max-height:280px; padding:10px; }
+    .trello-card{ font-size:12px; opacity:.96; text-align:left; padding:8px 10px; border-radius:10px; border:1px solid color-mix(in srgb, var(--theme-border) 70%, rgba(255,255,255,0.24)); background: linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.03)); box-shadow: 0 6px 16px rgba(0,0,0,0.24), inset 0 0 0 1px rgba(255,255,255,0.03); display:grid; gap:4px; }
+    .trello-card-title{ font-weight:600; letter-spacing:-0.01em; line-height:1.2; }
+    .trello-card-meta{ font-size:11px; opacity:0.78; }
+    .settings-advanced{ margin-top:8px; border:1px solid color-mix(in srgb, var(--theme-border) 82%, rgba(255,255,255,0.18)); border-radius:14px; padding:6px 10px; background: linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 72%, rgba(255,255,255,0.10)), color-mix(in srgb, var(--theme-panel) 90%, rgba(0,0,0,0.20))); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--theme-soft) 88%, rgba(255,255,255,0.04)); transition:border-color 220ms var(--ease-smooth), box-shadow 220ms var(--ease-smooth), transform 220ms var(--ease-smooth), background 220ms var(--ease-smooth); }
+    .settings-advanced:hover{ border-color: color-mix(in srgb, var(--theme-accent) 45%, white 55%); box-shadow: inset 0 0 0 1px var(--theme-soft), 0 10px 24px rgba(0,0,0,0.2); transform: translateY(-1px); }
     .settings-advanced > summary{ cursor:pointer; font-weight:600; list-style:none; display:flex; align-items:center; gap:8px; }
     .settings-advanced > summary::-webkit-details-marker{ display:none; }
     .settings-advanced > summary::before{ content:'▸'; opacity:.9; transition: transform 180ms var(--ease-smooth), color 180ms var(--ease-smooth); color: var(--theme-accent); }
     .settings-advanced[open] > summary::before{ transform: rotate(90deg); }
+    .settings-advanced .import-options{ margin-top:10px; padding:8px; border-radius:10px; border:1px solid color-mix(in srgb, var(--theme-border) 74%, rgba(255,255,255,0.2)); background: linear-gradient(180deg, color-mix(in srgb, var(--theme-panel) 70%, rgba(255,255,255,0.10)), color-mix(in srgb, var(--theme-panel) 88%, rgba(0,0,0,0.18))); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--theme-soft) 80%, rgba(255,255,255,0.03)); }
     .control-panel input[type="color"]{ width: 170px; height: 38px; border-radius: 12px; border:1px solid var(--theme-border); background: transparent; padding: 3px; box-shadow: 0 10px 22px rgba(0,0,0,0.18); cursor:pointer; transition: transform 200ms var(--ease-smooth), border-color 200ms var(--ease-smooth), box-shadow 200ms var(--ease-smooth); }
     .control-panel input[type="color"]:hover{ transform: translateY(-1px); border-color: color-mix(in srgb, var(--theme-accent) 55%, white 45%); box-shadow: 0 14px 26px rgba(0,0,0,0.25); }
     .theme-color-grid{ display:grid; grid-template-columns: 1fr auto; gap:10px; align-items:center; width:100%; }
@@ -1403,15 +1448,18 @@
           <div class="setting-name">Font</div>
           <div class="setting-desc">Pick a typeface for the countdown and title.</div>
         </div>
-        <select class="ui-select" id="fontSelect" aria-label="Font family">
-          <option value="inter">Inter</option>
-          <option value="system">System UI</option>
-          <option value="poppins">Poppins</option>
-          <option value="montserrat">Montserrat</option>
-          <option value="space">Space Grotesk</option>
-          <option value="mono">JetBrains Mono</option>
-          <option value="serif">Playfair Display</option>
-        </select>
+        <div class="dropdown" id="fontDropdown">
+          <button class="btn dropdown-btn" id="fontBtn" type="button" aria-haspopup="listbox" aria-expanded="false">Inter</button>
+          <div class="dropdown-menu" id="fontMenu" role="listbox" aria-label="Font family">
+            <button class="dropdown-item" type="button" role="option" data-value="inter" aria-selected="true"><span>Inter</span><span class="check">✓</span></button>
+            <button class="dropdown-item" type="button" role="option" data-value="system" aria-selected="false"><span>System UI</span><span class="check">✓</span></button>
+            <button class="dropdown-item" type="button" role="option" data-value="poppins" aria-selected="false"><span>Poppins</span><span class="check">✓</span></button>
+            <button class="dropdown-item" type="button" role="option" data-value="montserrat" aria-selected="false"><span>Montserrat</span><span class="check">✓</span></button>
+            <button class="dropdown-item" type="button" role="option" data-value="space" aria-selected="false"><span>Space Grotesk</span><span class="check">✓</span></button>
+            <button class="dropdown-item" type="button" role="option" data-value="mono" aria-selected="false"><span>JetBrains Mono</span><span class="check">✓</span></button>
+            <button class="dropdown-item" type="button" role="option" data-value="serif" aria-selected="false"><span>Playfair Display</span><span class="check">✓</span></button>
+          </div>
+        </div>
       </div>
 
 
@@ -1420,12 +1468,15 @@
           <div class="setting-name">Font weight</div>
           <div class="setting-desc">Set countdown number thickness.</div>
         </div>
-        <select class="ui-select" id="fontWeightSelect" aria-label="Font weight">
-          <option value="200">Light</option>
-          <option value="400" selected>Normal</option>
-          <option value="600">Semibold</option>
-          <option value="700">Bold</option>
-        </select>
+        <div class="dropdown" id="fontWeightDropdown">
+          <button class="btn dropdown-btn" id="fontWeightBtn" type="button" aria-haspopup="listbox" aria-expanded="false">Normal</button>
+          <div class="dropdown-menu" id="fontWeightMenu" role="listbox" aria-label="Font weight">
+            <button class="dropdown-item" type="button" role="option" data-value="200" aria-selected="false"><span>Light</span><span class="check">✓</span></button>
+            <button class="dropdown-item" type="button" role="option" data-value="400" aria-selected="true"><span>Normal</span><span class="check">✓</span></button>
+            <button class="dropdown-item" type="button" role="option" data-value="600" aria-selected="false"><span>Semibold</span><span class="check">✓</span></button>
+            <button class="dropdown-item" type="button" role="option" data-value="700" aria-selected="false"><span>Bold</span><span class="check">✓</span></button>
+          </div>
+        </div>
       </div>
 
       <details class="settings-advanced">
@@ -1941,7 +1992,12 @@ Or paste JSON exported from this page."></textarea>
       const toggleMinutesButton = document.getElementById('toggleMinutes');
       const toggleSecondsButton = document.getElementById('toggleSeconds');
       const toggleTitleButton = document.getElementById('toggleTitle');
-      const fontWeightSelect = document.getElementById('fontWeightSelect');
+      const fontDropdown = document.getElementById('fontDropdown');
+      const fontBtn = document.getElementById('fontBtn');
+      const fontMenu = document.getElementById('fontMenu');
+      const fontWeightDropdown = document.getElementById('fontWeightDropdown');
+      const fontWeightBtn = document.getElementById('fontWeightBtn');
+      const fontWeightMenu = document.getElementById('fontWeightMenu');
       const toggleUnitLabelsButton = document.getElementById('toggleUnitLabels');
       const toggleCondensedWindowButton = document.getElementById('toggleCondensedWindow');
       const toggleCondensedCountdownButton = document.getElementById('toggleCondensedCountdown');
@@ -1965,8 +2021,7 @@ Or paste JSON exported from this page."></textarea>
 
       const bloomClipper = document.getElementById('bloomClipper');
       const toggleBloomBorderButton = document.getElementById('toggleBloomBorder');
-      const fontSelect = document.getElementById('fontSelect');
-
+      
       const controlPanel = document.getElementById('controlPanel');
       const toggleArrow = document.getElementById('toggleArrow');
 
@@ -1987,10 +2042,31 @@ Or paste JSON exported from this page."></textarea>
         serif: "'Playfair Display', ui-serif, Georgia, 'Times New Roman', Times, serif",
       };
 
+      const FONT_LABELS = {
+        inter: 'Inter',
+        system: 'System UI',
+        poppins: 'Poppins',
+        montserrat: 'Montserrat',
+        space: 'Space Grotesk',
+        mono: 'JetBrains Mono',
+        serif: 'Playfair Display'
+      };
+      const FONT_WEIGHT_LABELS = { '200':'Light', '400':'Normal', '600':'Semibold', '700':'Bold' };
       let selectedFont = (localStorage.getItem('cb_font') || 'inter');
       if (!FONT_OPTIONS[selectedFont]) selectedFont = 'inter';
       document.documentElement.style.setProperty('--font-main', FONT_OPTIONS[selectedFont]);
-      if (fontSelect) fontSelect.value = selectedFont;
+
+      function closeDropdown(dropdownEl, btnEl){ if(!dropdownEl) return; dropdownEl.classList.remove('open'); btnEl?.setAttribute('aria-expanded','false'); }
+      function openDropdown(dropdownEl, btnEl){ if(!dropdownEl) return; dropdownEl.classList.add('open'); btnEl?.setAttribute('aria-expanded','true'); }
+      function syncOptionDropdown(menuEl, btnEl, value, labels){
+        menuEl?.querySelectorAll('.dropdown-item[data-value]').forEach((item)=>{
+          const on = item.getAttribute('data-value') === value;
+          item.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        if(btnEl) btnEl.textContent = labels[value] || value;
+      }
+      syncOptionDropdown(fontMenu, fontBtn, selectedFont, FONT_LABELS);
+      syncOptionDropdown(fontWeightMenu, fontWeightBtn, '400', FONT_WEIGHT_LABELS);
 
       // Bloom border (clipped glow) toggle
       let bloomBorderOn = (localStorage.getItem('cb_bloomBorder') || 'on') !== 'off';
@@ -3026,8 +3102,7 @@ let idx = 0;
           let obj = null;
           try{ obj = JSON.parse(String(text||'')); }catch(_){ }
           if(obj && Array.isArray(obj.cards) && Array.isArray(obj.lists)){
-            const lists = obj.lists.map(l => ({ id:String(l.id||''), name:String(l.name||'Untitled'), cards: (obj.cards||[]).filter(c=>String(c.idList||'')===String(l.id||'')) }));
-            openTrelloImportModal({ raw: obj, lists });
+            openTrelloImportModal({ raw: obj });
           } else {
             const incoming = parseTrelloTextToTasks(text);
             if(!incoming.length){
@@ -3141,17 +3216,60 @@ let idx = 0;
       applyThemePreset('default');
 
       let __trelloImportState = null;
-      function openTrelloImportModal(state){
-        __trelloImportState = state;
-        if(!trelloImportLists || !trelloImportModal) return;
+      const DONE_LIST_RE = /(^|)(done|complete|completed|finished|archive|archived)(|$)/i;
+      function formatDueForPreview(dueRaw){
+        if(!dueRaw) return 'No due date';
+        const ts = (new Date(dueRaw)).getTime();
+        if(!Number.isFinite(ts)) return 'No due date';
+        return new Date(ts).toLocaleString([], { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+      }
+      function getFilteredTrelloLists(raw, opts = {}){
+        const lists = Array.isArray(raw?.lists) ? raw.lists : [];
+        const cards = Array.isArray(raw?.cards) ? raw.cards : [];
+        const includeArchived = !!opts.includeArchived;
+        const includeCompleted = !!opts.includeCompleted;
+        const includeUndated = !!opts.includeUndated;
+
+        return lists.map((l)=>{
+          const listId = String(l?.id || '');
+          const listName = String(l?.name || 'Untitled');
+          const listArchived = !!l?.closed;
+          const listLooksDone = DONE_LIST_RE.test(listName);
+          const visibleCards = cards.filter((c)=>{
+            if(String(c?.idList || '') !== listId) return false;
+            const completed = !!c?.dueComplete;
+            const archived = !!c?.closed;
+            const hasDue = Number.isFinite((new Date(c?.due || c?.dueDate || c?.due_at || '')).getTime());
+            if((completed && !includeCompleted) || ((archived || listArchived || listLooksDone) && !includeArchived)) return false;
+            if(!hasDue && !includeUndated) return false;
+            return true;
+          });
+          return { id:listId, name:listName, closed:listArchived, looksDone:listLooksDone, cards: visibleCards };
+        }).filter((l)=> l.cards.length || includeArchived || includeCompleted || includeUndated);
+      }
+      function renderTrelloImportPreview(){
+        if(!trelloImportLists || !__trelloImportState?.raw) return;
+        const filteredLists = getFilteredTrelloLists(__trelloImportState.raw, {
+          includeUndated: !!trelloIncludeUndated?.checked,
+          includeArchived: !!trelloIncludeArchived?.checked,
+          includeCompleted: !!trelloIncludeCompleted?.checked
+        });
         trelloImportLists.innerHTML = '';
-        state.lists.forEach((lst, i)=>{
+        filteredLists.forEach((lst, i)=>{
           const wrap = document.createElement('div');
           wrap.className = 'trello-list' + (i===0 ? ' open' : '');
-          wrap.innerHTML = `<div class="trello-list-head"><span class="trello-arrow">▸</span><label class="check"><input type="checkbox" data-list-id="${escapeHtml(lst.id)}" checked> ${escapeHtml(lst.name)} (${lst.cards.length})</label></div><div class="trello-cards">${lst.cards.map(c => `<div class='trello-card'>• ${escapeHtml(c.name)}</div>`).join('')}</div>`;
+          wrap.innerHTML = `<div class="trello-list-head"><span class="trello-arrow">▸</span><label class="check"><input type="checkbox" data-list-id="${escapeHtml(lst.id)}" checked> ${escapeHtml(lst.name)} (${lst.cards.length})</label></div><div class="trello-cards">${lst.cards.map(c => `<div class='trello-card'><div class='trello-card-title'>${escapeHtml(c.name || 'Untitled card')}</div><div class='trello-card-meta'>${escapeHtml(formatDueForPreview(c.due || c.dueDate || c.due_at || null))}</div></div>`).join('')}</div>`;
           wrap.querySelector('.trello-list-head')?.addEventListener('click', (e)=>{ if(e.target.tagName !== 'INPUT') wrap.classList.toggle('open'); });
           trelloImportLists.appendChild(wrap);
         });
+        if(!filteredLists.length){
+          trelloImportLists.innerHTML = `<div class="trello-card"><div class="trello-card-title">No cards match current filters</div><div class="trello-card-meta">Try enabling archived/completed or include cards without due dates.</div></div>`;
+        }
+      }
+      function openTrelloImportModal(state){
+        __trelloImportState = state;
+        if(!trelloImportLists || !trelloImportModal) return;
+        renderTrelloImportPreview();
         trelloImportModal.hidden = false;
         trelloImportModal.classList.add('show');
         modalBackdrop?.classList.add('show');
@@ -3161,6 +3279,9 @@ let idx = 0;
         modalBackdrop?.classList.remove('show');
         __trelloImportState = null;
       }
+      trelloIncludeUndated?.addEventListener('change', renderTrelloImportPreview);
+      trelloIncludeArchived?.addEventListener('change', renderTrelloImportPreview);
+      trelloIncludeCompleted?.addEventListener('change', renderTrelloImportPreview);
       trelloImportCancelBtn?.addEventListener('click', closeTrelloImportModal);
       trelloImportApplyBtn?.addEventListener('click', ()=>{
         if(!__trelloImportState) return closeTrelloImportModal();
@@ -5160,7 +5281,7 @@ This cannot be undone.`,
 
         // Font
         selectedFont = 'inter';
-        if (fontSelect) fontSelect.value = selectedFont;
+        syncOptionDropdown(fontMenu, fontBtn, selectedFont, FONT_LABELS);
         document.documentElement.style.setProperty('--font-main', FONT_OPTIONS[selectedFont]);
         localStorage.setItem('cb_font', selectedFont);
 
@@ -5221,7 +5342,7 @@ This cannot be undone.`,
         return {
           showDays, showHours, showMinutes, showSeconds,
           showTitle: !titleElement.classList.contains('hidden'),
-          fontWeight: String(fontWeightSelect?.value || '400'),
+          fontWeight: String(countdownElement?.style?.fontWeight || '400'),
           showUnitLabels,
           condensedWindow: useCondensedWindowFormat,
           condensedCountdown: useCondensedCountdownFormat,
@@ -5332,7 +5453,7 @@ This cannot be undone.`,
       function setFontWeight(weight){
         const w = String(weight || '400');
         countdownElement.style.fontWeight = w;
-        if(fontWeightSelect) fontWeightSelect.value = w;
+        syncOptionDropdown(fontWeightMenu, fontWeightBtn, w, FONT_WEIGHT_LABELS);
       }
 
       function setUnitLabels(on){
@@ -5384,7 +5505,7 @@ This cannot be undone.`,
 
         if(snap.font && FONT_OPTIONS[snap.font]){
           selectedFont = snap.font;
-          if(fontSelect) fontSelect.value = selectedFont;
+          syncOptionDropdown(fontMenu, fontBtn, selectedFont, FONT_LABELS);
           document.documentElement.style.setProperty('--font-main', FONT_OPTIONS[selectedFont]);
           localStorage.setItem('cb_font', selectedFont);
         }
@@ -5764,13 +5885,47 @@ This cannot be undone.`,
       });
 
 
-      // Font weight
-      fontWeightSelect?.addEventListener('change', () => {
-        setFontWeight(fontWeightSelect.value || '400');
+      // Font controls (glass dropdowns)
+      fontWeightBtn?.addEventListener('click', (e)=>{
+        e.preventDefault();
+        if(fontWeightDropdown?.classList.contains('open')) closeDropdown(fontWeightDropdown, fontWeightBtn);
+        else {
+          closeDropdown(fontDropdown, fontBtn);
+          openDropdown(fontWeightDropdown, fontWeightBtn);
+        }
+      });
+      fontWeightMenu?.addEventListener('click', (e)=>{
+        const item = e.target.closest('.dropdown-item[data-value]');
+        if(!item) return;
+        const value = String(item.getAttribute('data-value') || '400');
+        setFontWeight(value);
+        closeDropdown(fontWeightDropdown, fontWeightBtn);
         updateCountdown();
         syncRestoreDefaultsVisibility();
       });
-
+      fontBtn?.addEventListener('click', (e)=>{
+        e.preventDefault();
+        if(fontDropdown?.classList.contains('open')) closeDropdown(fontDropdown, fontBtn);
+        else {
+          closeDropdown(fontWeightDropdown, fontWeightBtn);
+          openDropdown(fontDropdown, fontBtn);
+        }
+      });
+      fontMenu?.addEventListener('click', (e)=>{
+        const item = e.target.closest('.dropdown-item[data-value]');
+        if(!item) return;
+        const key = String(item.getAttribute('data-value') || 'inter');
+        selectedFont = FONT_OPTIONS[key] ? key : 'inter';
+        document.documentElement.style.setProperty('--font-main', FONT_OPTIONS[selectedFont]);
+        localStorage.setItem('cb_font', selectedFont);
+        syncOptionDropdown(fontMenu, fontBtn, selectedFont, FONT_LABELS);
+        closeDropdown(fontDropdown, fontBtn);
+        syncRestoreDefaultsVisibility();
+      });
+      document.addEventListener('click', (e)=>{
+        if(fontDropdown && !fontDropdown.contains(e.target)) closeDropdown(fontDropdown, fontBtn);
+        if(fontWeightDropdown && !fontWeightDropdown.contains(e.target)) closeDropdown(fontWeightDropdown, fontWeightBtn);
+      });
 
       // Unit label toggle
       toggleUnitLabelsButton?.addEventListener('click', () => {
@@ -5781,15 +5936,6 @@ This cannot be undone.`,
         syncRestoreDefaultsVisibility();
       });
 
-
-      // Font selection
-      fontSelect?.addEventListener('change', () => {
-        const key = String(fontSelect.value || 'inter');
-        selectedFont = FONT_OPTIONS[key] ? key : 'inter';
-        document.documentElement.style.setProperty('--font-main', FONT_OPTIONS[selectedFont]);
-        localStorage.setItem('cb_font', selectedFont);
-        syncRestoreDefaultsVisibility();
-      });
 
       // Bloom border toggle
       toggleBloomBorderButton?.addEventListener('click', () => {
